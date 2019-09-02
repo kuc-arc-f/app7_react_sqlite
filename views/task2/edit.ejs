@@ -1,0 +1,93 @@
+
+<h1>Task2 - edit</h1>
+<hr />
+<div id="app"></div>
+
+<!-- -->
+<script type="text/babel">
+
+class Edit extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            title: '', 
+            content: ''
+        }        
+        this.id = props.id
+    }
+    handleChange = event => {
+        const { name, value } = event.target
+        this.setState({
+            [name]: value
+        })
+    }
+    componentDidMount(){
+        axios.get('/api/tasks_show/'+this.id ).then(response => {
+            var data = response.data.docs[0]
+            this.setState({ title: data.title })
+            this.setState({ content: data.content })
+            console.log( this.state )
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
+    update_proc(){
+        const task = {
+            id: this.id,
+            title: this.state.title,
+            content: this.state.content
+        }
+        console.log(task )
+        let uri = '/api/tasks_update'
+        axios.post(uri, task ).then((response) => {
+            console.log(response.data )
+            console.log("success")
+            window.location.href="/task2"
+        })       
+    }
+    delete_proc(){
+        axios.get('/api/tasks_delete/'+this.id ).then(res =>  {
+            console.log( res.data )
+            window.location.href="/task2"
+        })        
+    }
+    render(){
+//        console.log( this.state )
+    const { title, content } = this.state;
+    return (
+        <div>
+            <div className="row">
+                <div className="col-md-6">
+                    <div className="form-group">
+                        <label>Title:</label>
+                        <input type="text" className="form-control" name="title"
+                        value={this.state.title}
+                            onChange={this.handleChange} />
+                    </div>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-md-6">
+                    <div className="form-group">
+                        <label>content:</label>
+                        <input type="text" className="form-control" name="content"
+                        value={this.state.content}
+                        onChange={this.handleChange} />
+                    </div>
+                </div>
+            </div><br />
+            <hr />
+            <a className="btn btn-primary" href='#'
+             onClick={this.update_proc.bind(this )}>Save</a>            
+            <hr />
+            <a className="btn btn-primary" href='#'
+             onClick={this.delete_proc.bind(this )}>Delete</a>
+        </div>
+    )
+    }
+
+}
+
+ReactDOM.render(<Edit id="<%= params_id %>"  />, document.getElementById('app'));
+</script>

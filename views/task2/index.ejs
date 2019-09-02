@@ -1,0 +1,64 @@
+
+<h1>Task2- index</h1>
+<br />
+<a href="/task2/new">[ new ] </a><br />
+<br />
+<div id="app"></div>
+
+<!-- -->
+<script type="text/babel">
+
+//
+class List extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {data: ''}
+    }
+    componentDidMount(){
+        axios.get('/api/tasks_index').then(response => {
+            this.setState({ data: response.data.docs })
+            console.log( response.data.docs )
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
+    tabRow(){
+        if(this.state.data instanceof Array){
+            return this.state.data.map(function(row, index){
+                return (
+                    <tr key={index}>
+                        <td>
+                            <a href={"/task2/show/"+row.id}>{row.id}</a><br />
+                        </td>
+                        <td>{row.title}</td>
+                        <td>{row.content}</td>
+                        <td><a href={"/task2/edit/"+row.id}>[ edit ]</a></td>                        
+                    </tr>            
+                )
+            })
+        }
+    }
+    render(){
+        return (
+            <div>
+                <table className="table table-hover">
+                    <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Title</td>
+                        <td>content</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.tabRow()}
+                    </tbody>
+                </table>            
+            </div>
+        )
+    }
+  
+}
+
+ReactDOM.render(<List />, document.getElementById('app'));
+</script>

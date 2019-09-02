@@ -1,0 +1,35 @@
+
+<h1>Show</h1>
+<hr />
+<div id="app"></div>
+
+<!-- -->
+<script type="text/babel">
+
+class Show extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {data: ''}
+        this.id = props.id
+        console.log(this.id)
+    }
+    componentDidMount(){
+        axios.get('/api/tasks_show/'+this.id ).then(response => {
+            this.setState({ data: response.data.docs[0] })
+            console.log( this.state.data )
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
+    render(){
+        return (
+            <div>
+                <h1>title : {this.state.data.title}</h1>
+                <div>{this.state.data.content}</div>
+            </div>
+        )
+    }
+}
+ReactDOM.render(<Show id="<%= params_id %>"  />, document.getElementById('app'));
+</script>

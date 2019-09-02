@@ -1,0 +1,65 @@
+<h1>Task2 -add</h1>
+<hr />
+<div id="app"></div>
+
+<!-- -->
+<script type="text/babel">
+
+class Create extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            title: '', 
+            content: ''
+        }
+    }
+    handleChange = event => {
+        const { name, value } = event.target
+        this.setState({
+            [name]: value
+        })
+    }
+    add_task(){
+//        console.log(this.state)
+        const task = {
+            title: this.state.title,
+            content: this.state.content
+        }
+        let uri = '/api/tasks_new'
+        axios.post(uri, task ).then((response) => {
+            window.location.href="/task2"
+            console.log("success")
+        })        
+    }
+    render() {
+//        console.log(this.state)
+        const { title, content } = this.state;
+        return (
+        <div>
+            <div className="row">
+            <div className="col-md-6">
+                <div className="form-group">
+                <label>Title:</label>
+                <input type="text" className="form-control" name="title"
+                onChange={this.handleChange}/>
+                </div>
+            </div>
+            </div>
+            <div className="row">
+                <div className="col-md-6">
+                <div className="form-group">
+                    <label>content:</label>
+                    <input type="text" className="form-control" name="content"
+                    onChange={this.handleChange}
+                    />
+                </div>
+                </div>
+            </div><br />
+            <hr />
+            <a className="btn btn-primary" href='#' onClick={this.add_task.bind(this )}>Add</a>
+        </div>
+        )
+    }
+}
+ReactDOM.render(<Create />, document.getElementById('app'));
+</script>
