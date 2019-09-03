@@ -14,5 +14,7 @@ React.js + node/express + sqlite3 sample
 ***
 ### more
 
+https://knaka0209.hatenablog.com/entry/react_express_4
+
 ***
 
