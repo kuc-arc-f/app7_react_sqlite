@@ -6,6 +6,8 @@
 
  date    : 2019/09/03
 
+ update  : 2021/09/20
+
 ***
 
 React.js + node/express + sqlite3 sample 
